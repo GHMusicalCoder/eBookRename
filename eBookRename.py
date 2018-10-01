@@ -1,5 +1,6 @@
 import pathlib
 import os
+import zipfile
 from platform import platform
 
 
@@ -16,7 +17,16 @@ def get_linux_path():
 
 def process_folder(path):
     for folder in os.listdir(str(path)):
-        print(folder)
+        name = folder
+        print("Folder name is " + name)
+        print("renamed folder would be " + folder.replace(' ', '_'))
+        # os.rename(folder, folder.replace(' ', '_'))
+        print("files in the folder are:")
+        for file in os.listdir(folder):
+            if zipfile.is_zipfile(file):
+                print("this one is zipped: " + file)
+            print(file)
+        print("----------")
 
 
 def main():
@@ -26,6 +36,7 @@ def main():
     elif operating_system[:5] == "Linux":
         main_path = get_linux_path()
 
+    os.chdir(main_path)
     process_folder(main_path)
 
 
