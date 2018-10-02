@@ -16,20 +16,6 @@ def get_linux_path():
 
 
 def process_folder(path):
-    for folder in os.listdir(str(path)):
-        name = folder
-        print("Folder name is " + name)
-        print("renamed folder would be " + folder.replace(' ', '_'))
-        # os.rename(folder, folder.replace(' ', '_'))
-        print("files in the folder are:")
-        for file in os.listdir(folder):
-            if zipfile.is_zipfile(file):
-                print("this one is zipped: " + file)
-            print(file)
-        print("----------")
-
-
-def new_process(path):
     for folder in pathlib.Path(path).iterdir():
         name = str(folder.parts[-1])
         print("Folder Name >>> " + name)
@@ -38,6 +24,17 @@ def new_process(path):
                 print("this one is zipped: " + file.name)
             print("Rename attempt will be >>> " + file.stem + file.suffix + " >>> " + name + file.suffix)
         print("*******************")
+    # for folder in os.listdir(str(path)):
+    #     name = folder
+    #     print("Folder name is " + name)
+    #     print("renamed folder would be " + folder.replace(' ', '_'))
+    #     # os.rename(folder, folder.replace(' ', '_'))
+    #     print("files in the folder are:")
+    #     for file in os.listdir(folder):
+    #         if zipfile.is_zipfile(file):
+    #             print("this one is zipped: " + file)
+    #         print(file)
+    #     print("----------")
 
 
 def main():
@@ -48,8 +45,7 @@ def main():
         main_path = get_linux_path()
 
     os.chdir(main_path)
-    # process_folder(main_path)
-    new_process(main_path)
+    process_folder(main_path)
 
 
 if __name__ == '__main__':
