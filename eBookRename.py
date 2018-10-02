@@ -1,6 +1,6 @@
 import pathlib
 import os
-import zipfile
+from zipfile import ZipFile
 from platform import platform
 
 
@@ -21,8 +21,20 @@ def process_folder(path):
         print("Folder Name >>> " + name)
         for file in folder.iterdir():
             if file.suffix == ".zip":
+                os.chdir(folder)
                 print("this one is zipped: " + file.name)
-            print("Rename attempt will be >>> " + file.stem + file.suffix + " >>> " + name + file.suffix)
+                zipped_file = ZipFile(file).namelist()[0]
+                # ZipFile(file).extract(zipped_file)
+                pdf_file = folder / zipped_file
+                new_name = folder / str(name + pdf_file.suffix)
+                print(str(pdf_file) + " will become >> " + str(new_name))
+                print("*** zip end ***")
+                # ZipFile(file).extractall()
+                # os.remove(file)
+                # at this point - the pdf exists but the zip file doesn't and the system won't see the pdf file
+                # so we need to rename the pdf file
+            else:
+                print("Rename attempt will be >>> " + file.stem + file.suffix + " >>> " + name + file.suffix)
         print("*******************")
     # for folder in os.listdir(str(path)):
     #     name = folder
