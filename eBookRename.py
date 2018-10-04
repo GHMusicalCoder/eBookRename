@@ -15,6 +15,7 @@ def get_linux_path():
     return pathlib.PurePath("/home/chris/Work") / master_folder
 
 
+# go through the zip file because some zips have all the files, and we only want the pdf
 def get_pdf_file_from_zip_file(zip_file):
     zipped_files = ZipFile(zip_file).namelist()
     for file in zipped_files:
