@@ -15,6 +15,13 @@ def get_linux_path():
     return pathlib.PurePath("/home/chris/Work") / master_folder
 
 
+def get_pdf_file_from_zip_file(zip_file):
+    zipped_files = ZipFile(zip_file).namelist()
+    for file in zipped_files:
+        if file[-4:] == ".pdf":
+            return file
+
+
 def process_folder(path):
     for folder in pathlib.Path(path).iterdir():
         name = str(folder.parts[-1])
@@ -22,7 +29,7 @@ def process_folder(path):
         os.chdir(folder)
         for file in folder.iterdir():
             if file.suffix == ".zip":   # this is done because epub shows up as a zipped file if I use .is_zipped
-                zipped_file = ZipFile(file).namelist()[0]
+                zipped_file = get_pdf_file_from_zip_file(file)
                 ZipFile(file).extract(zipped_file)
                 pdf_file = folder / zipped_file
                 new_file = folder / str(name + pdf_file.suffix)
