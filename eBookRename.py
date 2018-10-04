@@ -19,34 +19,26 @@ def process_folder(path):
     for folder in pathlib.Path(path).iterdir():
         name = str(folder.parts[-1])
         print("Folder Name >>> " + name)
+        os.chdir(folder)
         for file in folder.iterdir():
-            if file.suffix == ".zip":
-                os.chdir(folder)
-                print("this one is zipped: " + file.name)
+            if file.suffix == ".zip":   # this is done because epub shows up as a zipped file if I use .is_zipped
                 zipped_file = ZipFile(file).namelist()[0]
-                # ZipFile(file).extract(zipped_file)
+                ZipFile(file).extract(zipped_file)
                 pdf_file = folder / zipped_file
-                new_name = folder / str(name + pdf_file.suffix)
-                print(str(pdf_file) + " will become >> " + str(new_name))
-                print("*** zip end ***")
-                # ZipFile(file).extractall()
-                # os.remove(file)
-                # at this point - the pdf exists but the zip file doesn't and the system won't see the pdf file
-                # so we need to rename the pdf file
+                new_file = folder / str(name + pdf_file.suffix)
+                os.rename(pdf_file, new_file)
+                ZipFile(file).close()
+                print(str(pdf_file) + " has been renamed to > " + str(new_file))
+                os.remove(file)
+                print("The zip file > " + str(file) + " has been removed.")
             else:
-                print("Rename attempt will be >>> " + file.stem + file.suffix + " >>> " + name + file.suffix)
+                new_file = folder / str(name + file.suffix)
+                os.rename(file, new_file)
+                print(str(file) + " has been renamed to > " + str(new_file))
+        os.chdir(path)
+        new_folder = path / str(name).replace(' ', '_')
+        os.rename(folder, new_folder)
         print("*******************")
-    # for folder in os.listdir(str(path)):
-    #     name = folder
-    #     print("Folder name is " + name)
-    #     print("renamed folder would be " + folder.replace(' ', '_'))
-    #     # os.rename(folder, folder.replace(' ', '_'))
-    #     print("files in the folder are:")
-    #     for file in os.listdir(folder):
-    #         if zipfile.is_zipfile(file):
-    #             print("this one is zipped: " + file)
-    #         print(file)
-    #     print("----------")
 
 
 def main():
@@ -54,6 +46,8 @@ def main():
     if operating_system[:5] == "Windo":
         main_path = get_windows_path()
     elif operating_system[:5] == "Linux":
+        main_path = get_linux_path()
+    else:
         main_path = get_linux_path()
 
     os.chdir(main_path)
