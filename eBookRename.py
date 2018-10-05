@@ -4,7 +4,7 @@ from zipfile import ZipFile
 from platform import platform
 
 
-master_folder = "SitePoint Academy"
+master_folder = "SPWork"
 
 
 def get_windows_path():
