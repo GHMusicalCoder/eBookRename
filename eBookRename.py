@@ -1,7 +1,7 @@
 import pathlib
 import os
 from zipfile import ZipFile
-from platform import platform
+from platform import system
 
 
 master_folder = "SPWork"
@@ -50,11 +50,8 @@ def process_folder(path):
 
 
 def main():
-    operating_system = platform()
-    if operating_system[:5] == "Windo":
+    if system() == "Windows":
         main_path = get_windows_path()
-    elif operating_system[:5] == "Linux":
-        main_path = get_linux_path()
     else:
         main_path = get_linux_path()
 
